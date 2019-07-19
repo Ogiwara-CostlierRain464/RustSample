@@ -1,19 +1,13 @@
-fn main(){
-    let str = String::from("long");
-    let result;
+use std::fmt::Display;
 
-    {
-        let str2 = String::from("xyz");
-        result = longest(str.as_str(), str2.as_str());
-    }
-
-    print!("{}", result);
-}
-
-fn longest<'a>(x: &'a str, y: &'a str) -> &'a str{
-    if x.len() > y.len() {
+fn long<'a, T: Display>(x: &'a str, y: &'a str, ann :T) -> &'a str{
+    println!("ann {}", ann);
+    if  x.len() > y.len(){
         x
-    } else {
+    } else{
         y
     }
+}
+fn main(){
+
 }
