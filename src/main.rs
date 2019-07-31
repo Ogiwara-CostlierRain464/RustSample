@@ -1,13 +1,6 @@
-use std::fmt::Display;
+mod basic;
+use basic::{word_puzzle};
 
-fn long<'a, T: Display>(x: &'a str, y: &'a str, ann :T) -> &'a str{
-    println!("ann {}", ann);
-    if  x.len() > y.len(){
-        x
-    } else{
-        y
-    }
-}
 fn main(){
-
+    word_puzzle("9Q4EA");
 }
