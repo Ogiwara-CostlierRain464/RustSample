@@ -32,16 +32,16 @@ pub fn fizz_buzz(e: i32){
 use std::collections::HashMap;
 
 pub fn word_puzzle(code: &str){
-    let map: HashMap<String, String> = [
-        (String::from("A"), String::from("4")), 
-        (String::from("E"), String::from("3")),
-        (String::from("Q"), String::from("9")),
+    let map: HashMap<&str, &str> = [
+        ("A", "4"), 
+        ("E", "3"),
+        ("Q", "9"),
         ].iter().cloned().collect();
 
     let mut result = String::new();
 
     for c in code.chars() {
-        let big: String = c.to_uppercase().collect::<String>();
+        let big: &str = &c.to_uppercase().collect::<String>();
         
         let option = match map.contains_key(&big){
             true => map.get(&big),
