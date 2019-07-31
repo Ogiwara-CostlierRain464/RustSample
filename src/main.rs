@@ -1,6 +1,6 @@
-mod basic;
-use basic::{word_puzzle};
+mod ant;
+
 
 fn main(){
-    word_puzzle("9Q4EA");
+    ant::one::ants::ants(10, &[2,6,7]);
 }
