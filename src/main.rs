@@ -2,5 +2,5 @@ mod ant;
 
 
 fn main(){
-    ant::one::ants::ants(10, &[2,6,7]);
+    ant::two::leaf(&[1,2,4,7], 4, 15);
 }
