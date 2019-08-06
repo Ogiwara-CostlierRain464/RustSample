@@ -46,7 +46,7 @@ pub fn maze(path: &[&[char]]){
             && ny < M as isize 
             && path[nx as usize][ny as usize] != '#' 
             && d[nx as usize][ny as usize] == INF{
-                // 移動できるならキューに入れ、その点の距離をpからの距離+1で確定
+                // 移動できるならキューに入れ、その点の距離をpからの距離+1でマーク
                 queue.push(Point{x: nx as usize, y: ny as usize});
                 d[nx as usize][ny as usize] = d[p.x][p.y] + 1;
             }
