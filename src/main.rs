@@ -1,5 +1,11 @@
 mod ant;
 
+use ant::two::expedition;
+
 fn main(){
-    ant::two::knapsack();
+    test();
+}
+
+fn test(){
+    expedition();
 }

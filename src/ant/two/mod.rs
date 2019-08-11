@@ -107,3 +107,45 @@ unsafe fn rec(i: usize, j: usize) -> usize{
 
     DP[i][j]
 }
+
+
+
+// 車で遠足するやつ
+pub fn expedition(){
+    use std::collections::BinaryHeap;
+
+    let L = 25;            // 距離
+    let P = 10;            // ガソリンの量
+    let mut N = 4;
+    let mut A = [10,14,20,21,0]; // 距離
+    let mut B = [10,5,2,4,0];    // 補給できるガソリン容量
+    
+    // 簡単のため、ゴールをガソリンスタンドに追加
+    A[N] = L;
+    B[N] = 0;
+    N += 1;
+
+    let mut queue: BinaryHeap<usize> = BinaryHeap::new();
+
+    let mut ans = 0;
+    let mut pos = 0;
+    let mut tank = P;
+
+    for i in 0..N{
+        let d = A[i] - pos;
+
+        while (tank as isize - d as isize) < 0 {
+            if queue.is_empty() {
+                panic!();
+            }
+            tank += queue.pop().unwrap();
+            ans += 1;
+        }
+        
+        tank -= d;
+        pos = A[i];
+        queue.push(B[i]);
+    }
+
+    println!("{}", ans);
+}
