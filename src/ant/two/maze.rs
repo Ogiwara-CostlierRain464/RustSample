@@ -34,7 +34,7 @@ pub fn maze(path: &[&[char]]){
         // 取り出してきた状態がゴールなら探索終了
         if p.x == goal.x && p.y == goal.y {
             break;
-        }
+        } 
 
         //移動四方向をループ
         for i in 0..3{

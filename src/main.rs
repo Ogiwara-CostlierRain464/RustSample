@@ -1,52 +1,76 @@
-use std::fmt;
+use std::cmp::max;
 
-static mut par: [usize;10] = [0,1,2,3,4,5,6,7,8,9];
-static mut rank: [usize;10] = [0;10];
+const N: usize = 4;
+const ARR: [(usize,usize);4] = [(2,3),(1,2),(3,4),(2,2)];
+const W: usize = 5;
+
+const w: [usize;4] = [2,1,3,2];
+const v: [usize;4] = [3,2,4,2];
 
 fn main(){
     unsafe {
-        test();
+       // println!("{}", dfss(0, W));
+       dfsss();
     }
 }
 
-// 木の根を求める
-unsafe fn find(x: usize) -> usize{
-    if par[x] == x {
-        return x;
-    }else{
-        par[x] = find(par[x]);
-        return par[x];
-    }
+/// i: current index
+/// acc: (weight, value)
+/// 
+fn dfs(i: usize, acc: (usize, usize)) -> usize{
+    if acc.0 > W{ return 0; }
+    if i == N{ return acc.1; }
+
+    return max(
+        dfs(i + 1, acc),
+        dfs(i + 1, (acc.0 + ARR[i].0, acc.1 + ARR[i].1)),
+        )
+    
 }
 
-// xとyの属する集合を併合
-unsafe fn unite(mut x: usize,mut y: usize){
-    x = find(x);
-    y = find(y);
-    if x == y {return;}
+static mut DP: [[usize;N + 2];N + 2] = [[0;N + 2];N + 2];
 
-    if rank[x] < rank[y] {
-        par[x] = y;
+/// DPのために変更！
+/// (index, least weight)
+/// 
+unsafe fn dfss(i: usize, least_weight: usize) -> usize{
+    if DP[i][least_weight] != 0{
+        return DP[i][least_weight];
+    }
+
+    let mut res = 0;
+
+    if i == N {
+        res = 0; 
+    }else if ARR[i].0 > least_weight { 
+        res = 0; 
     }else{
-        par[y] = x;
-        if rank[x] == rank[y] {
-            rank[x] += 1;
+        res =  max(
+            dfss(i + 1, least_weight),
+            dfss(i + 1, least_weight - ARR[i].0) + ARR[i].1
+        );
+    }
+
+    DP[i][least_weight] = res;
+
+    return res;
+}
+
+/// |- dp[n][j] = 0
+/// |- dp[i][j] = |- dp[i+1][j] when j < w[i]
+///               |- max(
+///                     dp[i+1][j], 
+///                     dp[i+1][j-w[i]]+v[i]
+///                  ) when otherwise
+unsafe fn dfsss(){
+    for i in (0..N).rev(){
+        for j in 0..=W{
+            if j < w[i]{
+                DP[i][j] = DP[i + 1][j];
+            }else{
+                DP[i][j] = max(DP[i + 1][j], DP[i + 1][j - w[i]] + v[i]);
+            }
         }
     }
-}
-
-// xとyが同じ集合に属するか否か
-unsafe fn same(x: usize, y: usize) -> bool{
-    return find(x) == find(y);
-}
-
-unsafe fn test(){
-    unite(1,2);
-    unite(1,5);
-
-    unite(6,3);
-    unite(4,7);
-    unite(6,7);
-
-    println!("{}", same(6, 2));
+    println!("{}", DP[0][W]);
 }
