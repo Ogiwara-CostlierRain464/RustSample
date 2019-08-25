@@ -1,6 +1,6 @@
 //pub mod maze;
-
 use std::cmp::{min, max};
+#[macro_use]
 
 #[allow(dead_code)]
 fn leaf(a: &[i32],n: i32, k: i32){
@@ -111,6 +111,7 @@ unsafe fn rec(i: usize, j: usize) -> usize{
 
 
 // 車で遠足するやつ
+#[allow(dead_code)]
 pub fn expedition(){
     use std::collections::BinaryHeap;
 
@@ -127,7 +128,7 @@ pub fn expedition(){
 
     let mut queue: BinaryHeap<usize> = BinaryHeap::new();
 
-    let mut ans = 0;
+    let mut ans = 0;     
     let mut pos = 0;
     let mut tank = P;
 
@@ -148,4 +149,47 @@ pub fn expedition(){
     }
 
     println!("{}", ans);
+}
+
+
+lazy_static! {
+    static ref G: [Vec<usize>;V] = [
+        vec![1,2],
+        vec![0,2],
+        vec![0,1],
+    ];
+}
+
+const V: usize = 3;
+static mut color :[isize;V] = [0;V];
+
+#[allow(dead_code)]
+pub unsafe fn bipartite_graph(){
+    for i in 0..V{
+        if color[i] == 0{
+            if !dfss(i,1){
+                println!("NO");
+                return;
+            }
+        }
+    }    
+    println!("YES");
+}
+
+unsafe fn dfss(v: usize, c: isize) -> bool{
+    color[v] = c;
+    for i in 0..G[v].len() {
+        // 隣接している頂点が同じ色なら
+        if color[G[v][i]] == c{
+            return false;
+        }
+        // 隣接している頂点がまだ塗られていないなら-cで塗る
+        if color[G[v][i]] == 0{
+            if !dfss(G[v][i],-c){
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
